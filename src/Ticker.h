@@ -1,0 +1,5 @@
+class Ticker
+{
+ public:
+  Ticker ();
+};
