@@ -2,7 +2,7 @@
 #include <GL/glut.h>
 // THANKS MINGW!
 // WHY YOU NOT SEARCHING FILES IN THE PROJECT??????
-#include <src/Ticker.h>
+#include "src/Ticker.h"
 
 float r = 0,
       g = 0,
