@@ -1,5 +1,0 @@
-class Ticker
-{
- public:
-  Ticker ();
-};
