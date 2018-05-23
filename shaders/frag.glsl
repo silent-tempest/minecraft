@@ -1,6 +1,6 @@
-uniform vec4 u_color;
+uniform vec4 uColor;
 
 void main ()
 {
-  gl_FragColor = vec4( u_color.rgb / 255.0, u_color.a );
+  gl_FragColor = vec4( uColor.rgb / 255.0, uColor.a );
 }
