@@ -2,6 +2,13 @@
 
 namespace v6 {
 
+float timestamp ()
+{
+  timeb tb;
+  ftime( &tb );
+  return float( tb.millitm + ( tb.time & 0xfffff ) * 1000 );
+}
+
 Ticker::Ticker ()
 {
   

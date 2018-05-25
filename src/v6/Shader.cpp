@@ -1,4 +1,4 @@
-#include "Shader.cpp"
+#include "Shader.h"
 
 namespace v6 {
 

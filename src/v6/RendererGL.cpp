@@ -5,10 +5,8 @@ namespace v6 {
 RendererGL::RendererGL ( char* name )
 {
   GLFWvidmode desktop;
-
   glfwGetDesktopMode( &desktop );
-
-  create( desktop.Width, h.Height, name );
+  create( desktop.Width, desktop.Height, name );
 };
 
 RendererGL::RendererGL ( int w, int h, char* name )
