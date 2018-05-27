@@ -1,3 +1,6 @@
+#include <sys/timeb.h>
+#include <algorithm>
+#include <GLFW/glfw3.h>
 #include "Ticker.h"
 
 namespace v6 {
@@ -9,18 +12,13 @@ float timestamp ()
   return float( tb.millitm + ( tb.time & 0xfffff ) * 1000 );
 }
 
-Ticker::Ticker ()
-{
-  
-}
-
 void Ticker::tick ()
 {
   float lastTime = timestamp(),
         skippedTime = 0,
         totalTime = 0;
 
-  stopped = false;
+  running = true;
 
   do {
     float now = timestamp(),
@@ -39,10 +37,6 @@ void Ticker::tick ()
     lastTime = now;
 
     glfwPollEvents();
-
-    if ( running ) {
-      running = !glfwWindowShouldClose( window );
-    }
   } while ( running );
 }
 

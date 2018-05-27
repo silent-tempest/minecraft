@@ -3,7 +3,8 @@
 
 namespace v6 {
   class v6 {
-    
+   public:
+    v6 ();
   };
 }
 

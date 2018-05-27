@@ -1,8 +1,12 @@
+#include <iostream>
+#include <fstream>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 #include "Shader.h"
 
 namespace v6 {
 
-Shader::Shader ( int _type ) : type( _type ) {}
+Shader::Shader ( GLuint type ) : type( type ) {}
 
 void Shader::load ( char* path )
 {
@@ -21,7 +25,7 @@ void Shader::load ( char* path )
   source( srcstr.c_str() );
 }
 
-void Shader::source ( char* src )
+void Shader::source ( const char* src )
 {
   shader = glCreateShader( type );
 

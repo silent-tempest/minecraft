@@ -1,21 +1,27 @@
 /**
- * Compile: g++ -o main.deb src/main.cpp -lGL -lGLEW -lglfw
+ * Compile: g++ -o main.deb src/main.cpp -I src/*.cpp -I src/v6/*.cpp -lGL -lGLEW -lglfw
  */
 
-#include <iostream>      // std::cout, std::endl, std::cerr
-#include <fstream>       // std::ifstream
-#include <sstream>       // std::stringstream
-#include <streambuf>     // std::istreambuf_iterator
-#include <sys/timeb.h>   // ftime (to implement timestamp())
-#include <algorithm>     // std::min
-#include <GL/glew.h>     // GLEW
-#include <GLFW/glfw3.h>  // Use GLFW to create a window
-#include <GL/freeglut.h> // OpenGL
-#include "v6/v6.h"       // v6.js implementation
-#include "v6/Ticker.h"
-#include "v6/Shader.h"
-#include "v6/Program.h"
+// #include <iostream>      // std::cout, std::endl, std::cerr
+// #include <fstream>       // std::ifstream
+// #include <sstream>       // std::stringstream
+// #include <streambuf>     // std::istreambuf_iterator
+// #include <sys/timeb.h>   // ftime (to implement timestamp())
+// #include <algorithm>     // std::min
+// #include <GL/glew.h>     // GLEW
+// #include <GLFW/glfw3.h>  // Use GLFW to create a window
+// #include <GL/freeglut.h> // OpenGL
+// #include "v6/v6.h"       // v6.js implementation
+// #include "v6/Ticker.h"
+// #include "v6/Shader.h"
+// #include "v6/Program.h"
+// #include "v6/RendererGL.h"
+
+#include "v6/v6.h"
 #include "v6/RendererGL.h"
+#include "v6/Program.h"
+#include "v6/Shader.h"
+#include "v6/Ticker.h"
 
 float r = 0.0f,
       g = 0.0f,
@@ -54,7 +60,7 @@ Minecraft* minecraft;
 
 void Ticker::update ( float dt )
 {
-
+  
 }
 
 void Ticker::render ( float dt )
@@ -62,13 +68,14 @@ void Ticker::render ( float dt )
   glClearColor( r, g, b, 1.0f );
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   glfwSwapBuffers( minecraft->renderer->window );
+
+  if ( glfwWindowShouldClose( minecraft->renderer->window ) ) {
+    stop();
+  }
 }
 
 int main ( int argc, char** argv )
 {
-
   minecraft = new Minecraft();
-
   return 0;
-
 }

@@ -1,9 +1,9 @@
 #ifndef V6_RENDERERGL_H
 #define V6_RENDERERGL_H
 
-// #include <GLFW/glfw3.h>
-// #include "Shader.h"
-// #include "Program.h"
+#include <GLFW/glfw3.h>
+#include "Program.h"
+#include "Shader.h"
 
 namespace v6 {
   class RendererGL {

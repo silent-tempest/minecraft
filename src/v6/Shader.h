@@ -1,13 +1,15 @@
 #ifndef V6_SHADER_H
 #define V6_SHADER_H
 
+#include <GL/freeglut.h>
+
 namespace v6 {
   class Shader {
    public:
-    Shader ( int );
+    Shader ( GLuint );
     void load ( char* );
-    void source ( char* );
-    int type;
+    void source ( const char* );
+    GLuint type;
     GLuint shader;
   };
 }
