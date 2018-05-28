@@ -7,7 +7,7 @@ namespace v6 {
   class Shader {
    public:
     Shader ( GLuint );
-    void load ( char* );
+    void load ( const char* );
     void source ( const char* );
     GLuint type;
     GLuint shader;

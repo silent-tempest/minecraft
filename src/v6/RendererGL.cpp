@@ -5,18 +5,18 @@
 
 namespace v6 {
 
-RendererGL::RendererGL ( char* name )
+RendererGL::RendererGL ( const char* name )
 {
   const GLFWvidmode* mode = glfwGetVideoMode( glfwGetPrimaryMonitor() );
   create( mode->width, mode->height, name );
 };
 
-RendererGL::RendererGL ( int w, int h, char* name )
+RendererGL::RendererGL ( int w, int h, const char* name )
 {
   create( w, h, name );  
 }
 
-void RendererGL::create ( int w, int h, char* name )
+void RendererGL::create ( int w, int h, const char* name )
 {
   if ( !glfwInit() ) {
     std::cerr << "Unable to initialize GLFW" << std::endl;

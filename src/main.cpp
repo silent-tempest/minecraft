@@ -17,6 +17,7 @@
 // #include "v6/Program.h"
 // #include "v6/RendererGL.h"
 
+#include <iostream>
 #include "v6/v6.h"
 #include "v6/Ticker.h"
 #include "v6/Shader.h"
@@ -39,11 +40,13 @@ namespace minecraft {
 
   void init ()
   {
+
     renderer = new v6::RendererGL( 640, 480, "Minecraft" );
 
     v6::Shader v( GL_VERTEX_SHADER ),
                f( GL_FRAGMENT_SHADER );
 
+    // here is the segmentation fault
     v.load( "shaders/v.glsl" );
     f.load( "shaders/f.glsl" );
 

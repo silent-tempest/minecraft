@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <streambuf>     // std::istreambuf_iterator
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include "Shader.h"
@@ -8,7 +9,7 @@ namespace v6 {
 
 Shader::Shader ( GLuint type ) : type( type ) {}
 
-void Shader::load ( char* path )
+void Shader::load ( const char* path )
 {
   std::ifstream file( path );
 

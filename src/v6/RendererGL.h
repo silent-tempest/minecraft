@@ -8,9 +8,9 @@
 namespace v6 {
   class RendererGL {
    public:
-    RendererGL ( char* );
-    RendererGL ( int, int, char* );
-    void create ( int, int, char* );
+    RendererGL ( const char* );
+    RendererGL ( int, int, const char* );
+    void create ( int, int, const char* );
     void shaders ( Shader, Shader );
     void rect ( int, int, int, int );
     Program* program;
