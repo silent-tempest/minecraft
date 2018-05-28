@@ -1,6 +1,7 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 #include "RendererGL.h"
+#include "Program.h"
 
 namespace v6 {
 
@@ -21,6 +22,7 @@ void RendererGL::create ( int w, int h, char* name )
     std::cerr << "Unable to initialize GLFW" << std::endl;
   }
 
+  // 4.3  -> 4, 3
   // int major = glVersion;
   // int minor = ( glVersion - float( major ) ) * 10;
 

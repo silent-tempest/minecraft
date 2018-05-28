@@ -1,3 +1,6 @@
+#include <iostream>
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 #include "Program.h"
 
 namespace v6 {

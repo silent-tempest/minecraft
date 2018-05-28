@@ -18,24 +18,26 @@
 // #include "v6/RendererGL.h"
 
 #include "v6/v6.h"
-#include "v6/RendererGL.h"
-#include "v6/Program.h"
-#include "v6/Shader.h"
 #include "v6/Ticker.h"
+#include "v6/Shader.h"
+#include "v6/Program.h"
+#include "v6/RendererGL.h"
 
-float r = 0.0f,
-      g = 0.0f,
-      b = 0.0f;
+namespace minecraft {
+  class Ticker : public v6::Ticker {
+   public:
+    void update ( float );
+    void render ( float );
+  };
 
-class Ticker : public v6::Ticker {
- public:
-  void update ( float );
-  void render ( float );
-};
+  float r = 0.0f,
+        g = 0.0f,
+        b = 0.0f;
 
-class Minecraft {
- public:
-  Minecraft ()
+  v6::RendererGL* renderer;
+  Ticker* ticker;
+
+  void init ()
   {
     renderer = new v6::RendererGL( 640, 480, "Minecraft" );
 
@@ -52,30 +54,27 @@ class Minecraft {
     ticker->tick();
   }
 
-  v6::RendererGL* renderer;
-  Ticker* ticker;
-};
+  void Ticker::update ( float dt )
+  {
+    r += 0.01f;
+    g += 0.01f;
+    b += 0.01f;
+  }
 
-Minecraft* minecraft;
+  void Ticker::render ( float dt )
+  {
+    glClearColor( r, g, b, 1.0f );
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glfwSwapBuffers( renderer->window );
 
-void Ticker::update ( float dt )
-{
-  
-}
-
-void Ticker::render ( float dt )
-{
-  glClearColor( r, g, b, 1.0f );
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-  glfwSwapBuffers( minecraft->renderer->window );
-
-  if ( glfwWindowShouldClose( minecraft->renderer->window ) ) {
-    stop();
+    if ( glfwWindowShouldClose( renderer->window ) ) {
+      stop();
+    }
   }
 }
 
 int main ( int argc, char** argv )
 {
-  minecraft = new Minecraft();
+  minecraft::init();
   return 0;
 }
