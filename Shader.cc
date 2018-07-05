@@ -1,11 +1,8 @@
 #include <iostream>
-#include <fstream>
-#include <streambuf>     // std::istreambuf_iterator
-#include <GL/glew.h>
-#include <GL/freeglut.h>
+#include <fstream>   // std::ifstream
+#include <streambuf> // std::istreambuf_iterator
+#include "include/GL/glew.h"
 #include "Shader.h"
-
-namespace v6 {
 
 Shader::Shader ( GLuint type ) : type( type ) {}
 
@@ -13,17 +10,18 @@ void Shader::load ( const char* path )
 {
   std::ifstream file( path );
 
-  if ( !file ) {
-    std::cerr << "Unable to open shader" << std::endl;
+  if ( ! file ) {
+    std::cout << "Unable to open shader" << std::endl;
+    return;
   }
 
-  std::string srcstr = std::string( ( std::istreambuf_iterator<char>( file ) ), std::istreambuf_iterator<char>() );
+  std::string srcstr = std::string( std::istreambuf_iterator<char>( file ), std::istreambuf_iterator<char>() );
 
   const GLchar* src = srcstr.c_str();
 
   file.close();
 
-  source( srcstr.c_str() );
+  source( src );
 }
 
 void Shader::source ( const char* src )
@@ -37,11 +35,13 @@ void Shader::source ( const char* src )
 
   glGetShaderiv( shader, GL_COMPILE_STATUS, &ok );
 
-  if ( !ok ) {
-    GLchar log[ 512 ];
+  if ( ! ok ) {
+    char* log = new char[ 512 ];
+
     glGetShaderInfoLog( shader, 512, nullptr, log );
-    std::cerr << "An error occurred compiling the shaders: " << log << std::endl;
+
+    std::cout << "An error occurred compiling the shaders: " << log << std::endl;
+
+    delete[] log;
   }
 }
-
-} // namespace v6

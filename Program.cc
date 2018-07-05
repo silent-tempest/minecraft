@@ -1,9 +1,7 @@
 #include <iostream>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
+#include "include/GL/glew.h"
+#include "include/GL/freeglut.h"
 #include "Program.h"
-
-namespace v6 {
 
 Program::Program ( Shader v, Shader f )
 {
@@ -17,20 +15,33 @@ Program::Program ( Shader v, Shader f )
   glLinkProgram( program );
   glGetProgramiv( program, GL_LINK_STATUS, &ok );
 
-  if ( !ok ) {
-    GLchar log[ 512 ];
+  if ( ! ok ) {
+    char* log = new char[ 512 ];
+
     glGetProgramInfoLog( program, 512, nullptr, log );
-    std::cerr << "Unable to initialize the shader program: " << log << std::endl;
+    
+    std::cout << "Unable to initialize the shader program: " << log << std::endl;
+    
+    delete[] log;
+
+    return;
   }
 
   glValidateProgram( program );
   glGetProgramiv( program, GL_VALIDATE_STATUS, &ok );
 
-  if ( !ok ) {
-    GLchar log[ 512 ];
+  if ( ! ok ) {
+    char* log = new char[ 512 ];
+
     glGetProgramInfoLog( program, 512, nullptr, log );
-    std::cerr << "Unable to validate the shader program" << log << std::endl;
+
+    std::cout << "Unable to validate the shader program: " << log << std::endl;
+
+    delete[] log;
   }
 }
 
-} // namespace v6
+void Program::load_uniforms ()
+{
+  
+}
