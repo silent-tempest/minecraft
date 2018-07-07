@@ -7,6 +7,8 @@ namespace mat3 {
   void translate ( float*, float, float );
   void rotate ( float*, float );
   void scale ( float*, float, float );
+  void transform ( float*, float, float, float, float, float, float );
+  void set_transform ( float*, float, float, float, float, float, float );
 }
 
 #endif

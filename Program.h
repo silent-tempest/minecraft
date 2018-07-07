@@ -2,12 +2,27 @@
 #define __PROGRAM_H__
 
 #include "include/GL/freeglut.h"
+#include "lib/Map.h"
+#include "ProgramAttribute.h"
 #include "Shader.h"
 
 class Program {
  public:
   Program ( Shader, Shader );
-  void load_uniforms ();
+
+  inline GLuint get_program ()
+  {
+    return program;
+  }
+
+  inline ProgramAttribute get_attribute ( const char* name )
+  {
+    return attributes.get( name );
+  }
+ private:
+  void load_attributes ();
+  bool loaded_attributes = false;
+  Map<ProgramAttribute> attributes;
   GLuint program;
 };
 

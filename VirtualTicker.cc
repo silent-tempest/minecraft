@@ -1,7 +1,7 @@
-#include <algorithm>       // std::min()
-#include "include/GLFW/glfw3.h"    // glfwPollEvents()
-#include "VirtualTicker.h" // The header
-#include "timestamp.h"     // timestamp()
+#include <algorithm>
+#include "include/GLFW/glfw3.h"
+#include "lib/timestamp.h"
+#include "VirtualTicker.h"
 
 void VirtualTicker::tick ()
 {
@@ -31,9 +31,4 @@ void VirtualTicker::tick ()
 void VirtualTicker::stop ()
 {
   running = false;
-}
-
-void VirtualTicker::set_frame_rate ( float fps )
-{
-  step = 1.0f / fps;
 }

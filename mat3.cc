@@ -1,4 +1,4 @@
-#include <cmath>  // std::sin(), std::cos()
+#include <cmath>
 #include "mat3.h"
 
 namespace mat3 {
@@ -54,6 +54,28 @@ void scale ( float* m1, float x, float y ) {
   m1[ 3 ] *= y;
   m1[ 4 ] *= y;
   m1[ 5 ] *= y;
+}
+
+void transform ( float* m1, float m11, float m12, float m21, float m22, float dx, float dy )
+{
+  m1[ 0 ] *= m11;
+  m1[ 1 ] *= m21;
+  m1[ 2 ] *= dx;
+  m1[ 3 ] *= m12;
+  m1[ 4 ] *= m22;
+  m1[ 5 ] *= dy;
+  m1[ 6 ] = 0;
+  m1[ 7 ] = 0;
+}
+
+void set_transform ( float* m1, float m11, float m12, float m21, float m22, float dx, float dy )
+{
+  m1[ 0 ] = m11; // x scale
+  m1[ 1 ] = m12; // x skew
+  m1[ 3 ] = m21; // y skew
+  m1[ 4 ] = m22; // y scale
+  m1[ 6 ] = dx;  // x translate
+  m1[ 7 ] = dy;  // y translate
 }
 
 } // namespace mat3

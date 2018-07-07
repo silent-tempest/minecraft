@@ -3,9 +3,9 @@
 
 #include <vector>
 #include "include/GLFW/glfw3.h"
+#include "Transform.h"
 #include "Program.h"
 #include "Shader.h"
-#include "Matrix.h"
 
 class RendererGL {
  public:
@@ -19,8 +19,8 @@ class RendererGL {
   void draw_vertices ( float*, int );
   void rect ( int, int, int, int );
   GLuint buffer;
-  Matrix* matrix;
   Program* program;
+  Transform* matrix;
   GLFWwindow* window;
   int width, height;
  private:

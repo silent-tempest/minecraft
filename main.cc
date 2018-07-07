@@ -1,11 +1,13 @@
-#include <vector>
+#include <exception>
 #include <iostream>
+#include <vector>
+
 #include "include/GLFW/glfw3.h"
 #include "include/GL/freeglut.h"
-#include "Matrix.h"
-#include "Shader.h"
-#include "RendererGL.h"
+
 #include "VirtualTicker.h"
+#include "RendererGL.h"
+#include "Shader.h"
 
 using std::cout;
 using std::endl;
@@ -23,7 +25,7 @@ namespace minecraft {
 
   void create ()
   {
-    renderer = new RendererGL( 4.3 );
+    renderer = new RendererGL( 2.0 );
 
     renderer->create( "Minecraft" );
 
@@ -43,19 +45,20 @@ namespace minecraft {
         g = 0.0f,
         b = 0.0f;
 
-  void Ticker::update ( float dt )
+  void Ticker::update ( float elapsed_time )
   {
-    r += 0.01f;
-    g += 0.01f;
-    b += 0.01f;
+    r += 0.0075f;
+    g += 0.0025f;
+    b += 0.0075f;
   }
 
-  void Ticker::render ( float dt )
+  void Ticker::render ( float elapsed_time )
   {
     glClearColor( r, g, b, 1.0f );
+
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    // renderer->rect( 100, 100, 100, 100 );
+    renderer->rect( 100, 100, 100, 100 );
 
     glfwSwapBuffers( renderer->window );
 
@@ -65,24 +68,7 @@ namespace minecraft {
   }
 }
 
-class TestClass {
- public:
-  TestClass ();
-  ~TestClass ();
-  const char* test = "TEST";
-};
-
-TestClass::TestClass ()
-{
-  cout << "new <TestClass>" << endl;
-}
-
-TestClass::~TestClass ()
-{
-  cout << "delete <TestClass>" << endl;
-}
-
-int main ( int argc, char const* argv[] )
+int main ( int argc, const char* argv[] )
 {
   minecraft::create();
 

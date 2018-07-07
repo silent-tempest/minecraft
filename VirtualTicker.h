@@ -5,7 +5,6 @@ class VirtualTicker {
  public:
   void tick ();
   void stop ();
-  void set_frame_rate ( float );
   virtual void update ( float ) = 0;
   virtual void render ( float ) = 0;
   float total_time = 0;

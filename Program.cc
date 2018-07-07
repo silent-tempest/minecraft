@@ -1,7 +1,9 @@
 #include <iostream>
 #include "include/GL/glew.h"
 #include "include/GL/freeglut.h"
+#include "ProgramAttribute.h"
 #include "Program.h"
+#include "Shader.h"
 
 Program::Program ( Shader v, Shader f )
 {
@@ -23,8 +25,6 @@ Program::Program ( Shader v, Shader f )
     std::cout << "Unable to initialize the shader program: " << log << std::endl;
     
     delete[] log;
-
-    return;
   }
 
   glValidateProgram( program );
@@ -39,9 +39,34 @@ Program::Program ( Shader v, Shader f )
 
     delete[] log;
   }
+
+  load_attributes();
 }
 
-void Program::load_uniforms ()
+void Program::load_attributes ()
 {
-  
+  if ( loaded_attributes ) {
+    return;
+  }
+
+  GLint i;
+
+  glGetProgramiv( program, GL_ACTIVE_ATTRIBUTES, &i );
+
+  while ( --i >= 0 ) {
+    GLsizei length;
+    GLenum type;
+    GLchar name[ 16 ];
+    int size;
+
+    glGetActiveAttrib( program, ( GLuint ) i, ( GLsizei ) 16, &length, &size, &type, name );
+
+    GLint location = glGetAttribLocation( program, name );
+
+    ProgramAttribute attr( name, type, size, location );
+
+    attributes.set( name, attr );
+  }
+
+  loaded_attributes = true;
 }

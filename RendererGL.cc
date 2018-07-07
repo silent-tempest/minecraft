@@ -1,13 +1,13 @@
 #include <iostream>
-#include "include/GL/glew.h"    // glewInit(), GLEW_OK
+#include "include/GL/glew.h"
 #include "include/GLFW/glfw3.h"
 #include "RendererGL.h"
+#include "Transform.h"
 #include "Program.h"
-#include "Matrix.h"
 
 RendererGL::RendererGL ( float version )
 {
-  matrix = new Matrix();
+  matrix = new Transform();
 
   if ( ! glfwInit() ) {
     std::cout << "Unable to initialize GLFW" << std::endl;
@@ -26,7 +26,14 @@ RendererGL::RendererGL ()
 
 RendererGL::~RendererGL ()
 {
+  for ( int i = shaders.size() - 1; i >= 0; --i ) {
+    if ( shaders[ i ] != nullptr ) {
+      delete shaders[ i ];
+    }
+  }
 
+  delete program;
+  delete matrix;
 }
 
 void RendererGL::create ( int w, int h, const char* name )
@@ -41,7 +48,6 @@ void RendererGL::create ( int w, int h, const char* name )
 
   if ( ! window ) {
     std::cout << "Unable to create a window" << std::endl;
-    return;
   }
 
   glfwMakeContextCurrent( window );
@@ -51,11 +57,15 @@ void RendererGL::create ( int w, int h, const char* name )
   }
 
   glGenBuffers( 1, &buffer );
+
+  glViewport( 0, 0, w, h );
+
+  glEnable( GL_DEPTH_TEST );
 }
 
 void RendererGL::create ( const char* name )
 {
-  const GLFWvidmode** mode = ( const GLFWvidmode** ) malloc( sizeof ( GLFWvidmode ) );
+  const GLFWvidmode** mode = ( const GLFWvidmode** ) new GLFWvidmode;
 
   *mode = glfwGetVideoMode( glfwGetPrimaryMonitor() );
 
@@ -82,12 +92,24 @@ void RendererGL::draw_vertices ( float* verts, int verts_count )
 {
   if ( verts != nullptr ) {
     glBindBuffer( GL_ARRAY_BUFFER, buffer );
-    glBufferData( GL_ARRAY_BUFFER, sizeof ( float ) * verts_count, verts, GL_STATIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, sizeof ( float ) * verts_count, verts, GL_DYNAMIC_DRAW );
   }
 
-  glUseProgram( program->program );
+  glUseProgram( program->get_program() );
 
-  glUniform2f( glGetUniformLocation( program->program, "res" ), width, height );
+  glUniform2f( glGetUniformLocation( program->get_program(), "res" ), width, height );
+
+  glUniformMatrix3fv( glGetUniformLocation( program->get_program(), "transform" ), 1, false, matrix->matrix );
+
+  glEnableVertexAttribArray( glGetAttribLocation( program->get_program(), "pos" ) );
+
+  // glEnableVertexAttribArray( program->get_attribute( "pos" ).get_location() );
+
+  glVertexAttribPointer( glGetAttribLocation( program->get_program(), "pos" ), 2, GL_FLOAT, false, 0, 0 );
+
+  glUniform4f( glGetUniformLocation( program->get_program(), "color" ), 255.0f, 0.0f, 255.0f, 1.0f );
+
+  glDrawArrays( GL_TRIANGLE_FAN, 0, verts_count );
 }
 
 void RendererGL::rect ( int x, int y, int w, int h )
@@ -99,11 +121,11 @@ void RendererGL::rect ( int x, int y, int w, int h )
     0.0f, 1.0f
   };
 
-  glPushMatrix();
+  matrix->push();
 
-  glTranslatef( x, y, 0.0f );
+  matrix->translate( x, y );
 
-  glScalef( w, h, 1.0f );
+  matrix->scale( w, h );
 
   glBindBuffer( GL_ARRAY_BUFFER, buffer );
 
@@ -111,5 +133,5 @@ void RendererGL::rect ( int x, int y, int w, int h )
 
   draw_vertices( nullptr, 4 );
 
-  glPopMatrix();
+  matrix->pop();
 }
