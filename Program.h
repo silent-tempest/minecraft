@@ -2,9 +2,9 @@
 #define __PROGRAM_H__
 
 #include "include/GL/freeglut.h"
-#include "lib/Map.h"
 #include "ProgramAttribute.h"
 #include "Shader.h"
+#include "Map.h"
 
 class Program {
  public:

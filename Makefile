@@ -5,13 +5,12 @@
 #   Remove All the Objects:                           make clean
 
 src := \
-	lib/timestamp.cc \
 	VirtualTicker.cc \
 	RendererGL.cc \
 	Transform.cc \
-	ProgramAttribute.cc \
 	Program.cc \
 	Shader.cc \
+	timestamp.cc \
 	mat3.cc \
 	main.cc
 obj := $(src:.cc=.o)

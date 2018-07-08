@@ -5,7 +5,9 @@
 
 class ProgramAttribute {
  public:
-  ProgramAttribute ( const char*, GLenum, int, int );
+  inline ProgramAttribute ( const char* name, GLenum type, int size, int location )
+    : name( name ), type( type ), size( size ), location( location )
+  {}
   
   inline const char* get_name ()
   {

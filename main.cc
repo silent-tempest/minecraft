@@ -5,8 +5,12 @@
 #include "include/GLFW/glfw3.h"
 #include "include/GL/freeglut.h"
 
+#include "random.h"
+
 #include "VirtualTicker.h"
 #include "RendererGL.h"
+#include "Vector2D.h"
+#include "Vector3D.h"
 #include "Shader.h"
 
 using std::cout;
@@ -19,9 +23,22 @@ namespace minecraft {
     void render ( float );
   };
 
+  std::vector<std::vector<Vector2D<float>>> shapes;
+
   RendererGL* renderer;
 
   Ticker* ticker;
+
+  bool mouse_is_pressed = false;
+
+  void on_mouse_press ( GLFWwindow* window, int button, int action, int modes )
+  {
+    if ( button == GLFW_MOUSE_BUTTON_LEFT ) {
+      if ( ( mouse_is_pressed = action == GLFW_PRESS ) ) {
+        shapes.push_back( std::vector<Vector2D<float>>() );
+      }
+    }
+  }
 
   void create ()
   {
@@ -38,6 +55,8 @@ namespace minecraft {
     renderer->add_shaders( 0, v, f );
     renderer->use_shaders( 0 );
 
+    glfwSetMouseButtonCallback( renderer->window, on_mouse_press );
+
     ticker = new Ticker();
   }
 
@@ -47,9 +66,17 @@ namespace minecraft {
 
   void Ticker::update ( float elapsed_time )
   {
-    r += 0.0075f;
-    g += 0.0025f;
-    b += 0.0075f;
+    r += 0.75f * elapsed_time;
+    g += 0.25f * elapsed_time;
+    b += 0.75f * elapsed_time;
+
+    if ( mouse_is_pressed ) {
+      double x, y;
+
+      glfwGetCursorPos( renderer->window, &x, &y );
+
+      shapes.back().push_back( Vector2D<float>( ( float ) x, ( float ) y ) );
+    }
   }
 
   void Ticker::render ( float elapsed_time )
@@ -58,7 +85,13 @@ namespace minecraft {
 
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-    renderer->rect( 100, 100, 100, 100 );
+    for ( int i = shapes.size() - 1; i >= 0; --i ) {
+      std::vector<Vector2D<float>> points = shapes[ i ];
+
+      for ( int j = points.size() - 1; j > 0; --j ) {
+        renderer->line( points[ j - 1 ].x, points[ j - 1 ].y + 60, points[ j ].x, points[ j ].y + 60 );
+      }
+    }
 
     glfwSwapBuffers( renderer->window );
 
@@ -67,6 +100,7 @@ namespace minecraft {
     }
   }
 }
+
 
 int main ( int argc, const char* argv[] )
 {

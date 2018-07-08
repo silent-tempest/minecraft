@@ -88,11 +88,11 @@ void RendererGL::use_shaders ( unsigned int index )
   program = shaders.at( index );
 }
 
-void RendererGL::draw_vertices ( float* verts, int verts_count )
+void RendererGL::draw_vertices ( float* verts, int verts_count, GLint type )
 {
   if ( verts != nullptr ) {
     glBindBuffer( GL_ARRAY_BUFFER, buffer );
-    glBufferData( GL_ARRAY_BUFFER, sizeof ( float ) * verts_count, verts, GL_DYNAMIC_DRAW );
+    glBufferData( GL_ARRAY_BUFFER, sizeof ( float ) * verts_count * 2, verts, GL_DYNAMIC_DRAW );
   }
 
   glUseProgram( program->get_program() );
@@ -107,9 +107,11 @@ void RendererGL::draw_vertices ( float* verts, int verts_count )
 
   glVertexAttribPointer( glGetAttribLocation( program->get_program(), "pos" ), 2, GL_FLOAT, false, 0, 0 );
 
-  glUniform4f( glGetUniformLocation( program->get_program(), "color" ), 255.0f, 0.0f, 255.0f, 1.0f );
+  glUniform4f( glGetUniformLocation( program->get_program(), "color" ), 255, 0, 255, 1 );
 
-  glDrawArrays( GL_TRIANGLE_FAN, 0, verts_count );
+  glLineWidth( 10 );
+
+  glDrawArrays( type, 0, verts_count );
 }
 
 void RendererGL::rect ( int x, int y, int w, int h )
@@ -131,7 +133,17 @@ void RendererGL::rect ( int x, int y, int w, int h )
 
   glBufferData( GL_ARRAY_BUFFER, sizeof ( float ) * 8, verts, GL_STATIC_DRAW );
 
-  draw_vertices( nullptr, 4 );
+  draw_vertices( nullptr, 4, GL_TRIANGLE_FAN );
 
   matrix->pop();
+}
+
+void RendererGL::line ( int x1, int y1, int x2, int y2 )
+{
+  float verts[ 4 ] = {
+    ( float ) x1, ( float ) y1,
+    ( float ) x2, ( float ) y2
+  };
+
+  draw_vertices( verts, 2, GL_LINE_LOOP );
 }

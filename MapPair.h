@@ -15,9 +15,9 @@ template <class T> class MapPair {
     return value;
   }
 
-  inline T set_value ( T value )
+  inline void set_value ( T new_value )
   {
-    return ( this->value = value );
+    value = new_value;
   }
  private:
   const char* name;

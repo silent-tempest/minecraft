@@ -17,7 +17,7 @@ void Shader::load ( const char* path )
 
   std::string srcstr = std::string( std::istreambuf_iterator<char>( file ), std::istreambuf_iterator<char>() );
 
-  const GLchar* src = srcstr.c_str();
+  const char* src = srcstr.c_str();
 
   file.close();
 

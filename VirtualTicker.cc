@@ -1,29 +1,32 @@
 #include <algorithm>
 #include "include/GLFW/glfw3.h"
-#include "lib/timestamp.h"
 #include "VirtualTicker.h"
+#include "timestamp.h"
 
 void VirtualTicker::tick ()
 {
-  float last_time = timestamp(),
-        skipped_time = 0;
+  float last_require_time = timestamp(),
+        skipped_time      = 0;
 
   running = true;
 
   do {
-    float now = timestamp(),
-          dt = std::min( 1.0f, ( now - last_time ) * 0.001f );
+    float now          = timestamp(),
+          elapsed_time = std::min( 1.0f, ( now - last_require_time ) * 0.001f );
 
-    skipped_time += dt;
-    total_time += dt;
+    skipped_time += elapsed_time;
 
-    while ( skipped_time >= step ) {
+    total_time += elapsed_time;
+
+    while ( skipped_time >= step && running ) {
       skipped_time -= step;
       update( step );
     }
 
-    render( dt );
-    last_time = now;
+    render( elapsed_time );
+
+    last_require_time = now;
+
     glfwPollEvents();
   } while ( running );
 }
