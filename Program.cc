@@ -41,6 +41,7 @@ Program::Program ( Shader v, Shader f )
   }
 
   load_attributes();
+  load_uniforms();
 }
 
 void Program::load_attributes ()
@@ -65,8 +66,36 @@ void Program::load_attributes ()
 
     ProgramAttribute attr( name, type, size, location );
 
-    attributes.set( name, attr );
+    attributes.set( std::string( name ), attr );
   }
 
   loaded_attributes = true;
+}
+
+void Program::load_uniforms ()
+{
+  if ( loaded_uniforms ) {
+    return;
+  }
+
+  GLint i;
+
+  glGetProgramiv( program, GL_ACTIVE_UNIFORMS, &i );
+
+  while ( --i >= 0 ) {
+    GLsizei length;
+    GLenum type;
+    GLchar name[ 16 ];
+    int size;
+
+    glGetActiveUniform( program, ( GLuint ) i, ( GLsizei ) 16, &length, &size, &type, name );
+
+    GLint location = glGetUniformLocation( program, name );
+
+    ProgramAttribute uniform( name, type, size, location );
+
+    uniforms.set( std::string( name ), uniform );
+  }
+
+  loaded_uniforms = true;
 }

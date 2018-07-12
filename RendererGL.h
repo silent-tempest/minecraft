@@ -20,6 +20,7 @@ class RendererGL {
   void draw_vertices ( float*, int, GLint );
   void rect ( int, int, int, int );
   void line ( int, int, int, int );
+  void arc ( int, int, float );
   GLuint buffer;
   Program* program;
   Transform* matrix;

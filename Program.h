@@ -15,14 +15,22 @@ class Program {
     return program;
   }
 
-  inline ProgramAttribute get_attribute ( const char* name )
+  inline ProgramAttribute get_attribute ( std::string name )
   {
     return attributes.get( name );
   }
+
+  inline ProgramAttribute get_uniform ( std::string name )
+  {
+    return uniforms.get( name );
+  }
  private:
   void load_attributes ();
+  void load_uniforms ();
   bool loaded_attributes = false;
+  bool loaded_uniforms = false;
   Map<ProgramAttribute> attributes;
+  Map<ProgramAttribute> uniforms;
   GLuint program;
 };
 

@@ -2,7 +2,6 @@
 #define __MAP_H__
 
 #include <stdexcept>
-#include <string.h>
 #include <vector>
 
 #include "MapPair.h"
@@ -16,7 +15,7 @@ template <class T> class Map {
     }
   }
 
-  T get ( const char* name )
+  T get ( std::string name )
   {
     MapPair<T>* pair = get_pair( name );
 
@@ -27,7 +26,7 @@ template <class T> class Map {
     return pair->get_value();
   }
 
-  T set ( const char* name, T value )
+  T set ( std::string name, T value )
   {
     MapPair<T>* pair = get_pair( name );
 
@@ -40,10 +39,10 @@ template <class T> class Map {
     return value;
   }
  private:
-  MapPair<T>* get_pair ( const char* name )
+  MapPair<T>* get_pair ( std::string name )
   {
     for ( int i = pairs.size() - 1; i >= 0; --i ) {
-      if ( strcmp( pairs[ i ]->get_name(), name ) == 0 ) {
+      if ( pairs[ i ]->get_name() == name ) {
         return pairs[ i ];
       }
     }

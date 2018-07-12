@@ -1,16 +1,13 @@
-#include <exception>
 #include <iostream>
 #include <vector>
 
 #include "include/GLFW/glfw3.h"
 #include "include/GL/freeglut.h"
 
-#include "random.h"
-
+#include "ProgramAttribute.h"
 #include "VirtualTicker.h"
 #include "RendererGL.h"
 #include "Vector2D.h"
-#include "Vector3D.h"
 #include "Shader.h"
 
 using std::cout;

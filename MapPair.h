@@ -3,9 +3,9 @@
 
 template <class T> class MapPair {
  public:
-  MapPair ( const char* name, T value ) : name( name ), value( value ) {}
+  MapPair ( std::string name, T value ) : name( name ), value( value ) {}
 
-  inline const char* get_name ()
+  inline std::string get_name ()
   {
     return name;
   }
@@ -20,7 +20,7 @@ template <class T> class MapPair {
     value = new_value;
   }
  private:
-  const char* name;
+  std::string name;
   T value;
 };
 

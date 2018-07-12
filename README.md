@@ -18,4 +18,4 @@ Remove the object:
 
 Compile into the object (only TheFile.o) then into an executable:
 
-`$ make
+`$ make`

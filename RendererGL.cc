@@ -97,17 +97,15 @@ void RendererGL::draw_vertices ( float* verts, int verts_count, GLint type )
 
   glUseProgram( program->get_program() );
 
-  glUniform2f( glGetUniformLocation( program->get_program(), "res" ), width, height );
+  glUniform2f( program->get_uniform( "res" ).get_location(), width, height );
 
-  glUniformMatrix3fv( glGetUniformLocation( program->get_program(), "transform" ), 1, false, matrix->matrix );
+  glUniformMatrix3fv( program->get_uniform( "transform" ).get_location(), 1, false, matrix->matrix );
 
-  glEnableVertexAttribArray( glGetAttribLocation( program->get_program(), "pos" ) );
+  glEnableVertexAttribArray( program->get_attribute( "pos" ).get_location() );
 
-  // glEnableVertexAttribArray( program->get_attribute( "pos" ).get_location() );
+  glVertexAttribPointer( program->get_attribute( "pos" ).get_location(), 2, GL_FLOAT, false, 0, 0 );
 
-  glVertexAttribPointer( glGetAttribLocation( program->get_program(), "pos" ), 2, GL_FLOAT, false, 0, 0 );
-
-  glUniform4f( glGetUniformLocation( program->get_program(), "color" ), 255, 0, 255, 1 );
+  glUniform4f( program->get_uniform( "color" ).get_location(), 255, 0, 255, 1 );
 
   glLineWidth( 10 );
 
