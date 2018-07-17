@@ -41,7 +41,7 @@ namespace minecraft {
   {
     renderer = new RendererGL( 2.0 );
 
-    renderer->create( "Minecraft" );
+    renderer->create( 640, 480, "Minecraft" );
 
     Shader v( GL_VERTEX_SHADER ),
            f( GL_FRAGMENT_SHADER );
@@ -86,7 +86,7 @@ namespace minecraft {
       std::vector<Vector2D<float>> points = shapes[ i ];
 
       for ( int j = points.size() - 1; j > 0; --j ) {
-        renderer->line( points[ j - 1 ].x, points[ j - 1 ].y + 60, points[ j ].x, points[ j ].y + 60 );
+        renderer->line( points[ j - 1 ].x, points[ j - 1 ].y, points[ j ].x, points[ j ].y );
       }
     }
 
