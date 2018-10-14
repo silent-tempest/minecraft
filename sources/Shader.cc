@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>   // std::ifstream
 #include <streambuf> // std::istreambuf_iterator
-#include "include/GL/glew.h"
-#include "Shader.h"
+#include "../include/GL/glew.h"
+#include "../Shader.h"
 
 Shader::Shader ( GLuint type ) : type( type ) {}
 

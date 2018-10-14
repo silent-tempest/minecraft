@@ -1,9 +1,7 @@
 #include <iostream>
 #include <vector>
-
 #include "include/GLFW/glfw3.h"
 #include "include/GL/freeglut.h"
-
 #include "ProgramAttribute.h"
 #include "VirtualTicker.h"
 #include "RendererGL.h"
@@ -13,6 +11,13 @@
 using std::cout;
 using std::endl;
 
+typedef struct {
+  std::vector<Vector2D<float>> vertices;
+  int r;
+  int g;
+  int b;
+} Vertices;
+
 namespace minecraft {
   class Ticker : public VirtualTicker {
    public:
@@ -20,31 +25,41 @@ namespace minecraft {
     void render ( float );
   };
 
-  std::vector<std::vector<Vector2D<float>>> shapes;
-
+  std::vector<Vertices> shapes;
   RendererGL* renderer;
-
   Ticker* ticker;
 
   bool mouse_is_pressed = false;
 
   void on_mouse_press ( GLFWwindow* window, int button, int action, int modes )
   {
-    if ( button == GLFW_MOUSE_BUTTON_LEFT ) {
-      if ( ( mouse_is_pressed = action == GLFW_PRESS ) ) {
-        shapes.push_back( std::vector<Vector2D<float>>() );
+    if ( ( button == GLFW_MOUSE_BUTTON_LEFT || button == GLFW_MOUSE_BUTTON_RIGHT ) && ( mouse_is_pressed = ( action == GLFW_PRESS ) ) ) {
+      Vertices vertices = {
+        std::vector<Vector2D<float>>()
+      };
+
+      if ( button == GLFW_MOUSE_BUTTON_LEFT ) {
+        vertices.r = 255;
+        vertices.g = 0;
+        vertices.b = 255;
+      } else {
+        vertices.r = 0;
+        vertices.g = 255;
+        vertices.b = 255;
       }
+
+      shapes.push_back( vertices );
     }
   }
 
   void create ()
   {
     renderer = new RendererGL( 2.0 );
+    renderer->create( 1080, 720, "Minecraft" );
+    renderer->line_width( 100 );
 
-    renderer->create( 640, 480, "Minecraft" );
-
-    Shader v( GL_VERTEX_SHADER ),
-           f( GL_FRAGMENT_SHADER );
+    Shader v( GL_VERTEX_SHADER );
+    Shader f( GL_FRAGMENT_SHADER );
 
     v.load( "shaders/basic.vert" );
     f.load( "shaders/basic.frag" );
@@ -57,36 +72,29 @@ namespace minecraft {
     ticker = new Ticker();
   }
 
-  float r = 0.0f,
-        g = 0.0f,
-        b = 0.0f;
-
   void Ticker::update ( float elapsed_time )
   {
-    r += 0.75f * elapsed_time;
-    g += 0.25f * elapsed_time;
-    b += 0.75f * elapsed_time;
-
     if ( mouse_is_pressed ) {
       double x, y;
-
       glfwGetCursorPos( renderer->window, &x, &y );
-
-      shapes.back().push_back( Vector2D<float>( ( float ) x, ( float ) y ) );
+      shapes.back().vertices.push_back( Vector2D<float>( ( float ) x, ( float ) y ) );
     }
   }
 
   void Ticker::render ( float elapsed_time )
   {
-    glClearColor( r, g, b, 1.0f );
-
+    glClearColor( 0.f, 0.f, 0.f, 1.f );
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     for ( int i = shapes.size() - 1; i >= 0; --i ) {
-      std::vector<Vector2D<float>> points = shapes[ i ];
+      Vertices vertices = shapes[ i ];
 
-      for ( int j = points.size() - 1; j > 0; --j ) {
-        renderer->line( points[ j - 1 ].x, points[ j - 1 ].y, points[ j ].x, points[ j ].y );
+      renderer->r = vertices.r;
+      renderer->g = vertices.g;
+      renderer->b = vertices.b;
+
+      for ( int j = vertices.vertices.size() - 1; j > 0; --j ) {
+        renderer->line( vertices.vertices[ j - 1 ].x, vertices.vertices[ j - 1 ].y, vertices.vertices[ j ].x, vertices.vertices[ j ].y );
       }
     }
 
@@ -102,8 +110,6 @@ namespace minecraft {
 int main ( int argc, const char* argv[] )
 {
   minecraft::create();
-
   minecraft::ticker->tick();
-
   return 0;
 }

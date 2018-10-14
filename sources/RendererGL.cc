@@ -1,9 +1,9 @@
 #include <iostream>
-#include "include/GL/glew.h"
-#include "include/GLFW/glfw3.h"
-#include "RendererGL.h"
-#include "Transform.h"
-#include "Program.h"
+#include "../include/GL/glew.h"
+#include "../include/GLFW/glfw3.h"
+#include "../RendererGL.h"
+#include "../Transform.h"
+#include "../Program.h"
 
 RendererGL::RendererGL ( float version )
 {
@@ -105,9 +105,9 @@ void RendererGL::draw_vertices ( float* verts, int verts_count, GLint type )
 
   glVertexAttribPointer( program->get_attribute( "pos" ).get_location(), 2, GL_FLOAT, false, 0, 0 );
 
-  glUniform4f( program->get_uniform( "color" ).get_location(), 255, 0, 255, 1 );
+  glUniform4f( program->get_uniform( "color" ).get_location(), r, g, b, 1 );
 
-  glLineWidth( 10 );
+  glLineWidth( _line_width );
 
   glDrawArrays( type, 0, verts_count );
 }
@@ -144,4 +144,9 @@ void RendererGL::line ( int x1, int y1, int x2, int y2 )
   };
 
   draw_vertices( verts, 2, GL_LINE_LOOP );
+}
+
+void RendererGL::line_width ( float line_width )
+{
+  _line_width = line_width;
 }

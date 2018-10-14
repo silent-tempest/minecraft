@@ -1,9 +1,9 @@
 #include <iostream>
-#include "include/GL/glew.h"
-#include "include/GL/freeglut.h"
-#include "ProgramAttribute.h"
-#include "Program.h"
-#include "Shader.h"
+#include "../include/GL/glew.h"
+#include "../include/GL/freeglut.h"
+#include "../ProgramAttribute.h"
+#include "../Program.h"
+#include "../Shader.h"
 
 Program::Program ( Shader v, Shader f )
 {
@@ -21,9 +21,9 @@ Program::Program ( Shader v, Shader f )
     char* log = new char[ 512 ];
 
     glGetProgramInfoLog( program, 512, nullptr, log );
-    
+
     std::cout << "Unable to initialize the shader program: " << log << std::endl;
-    
+
     delete[] log;
   }
 

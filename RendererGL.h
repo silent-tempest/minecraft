@@ -21,11 +21,16 @@ class RendererGL {
   void rect ( int, int, int, int );
   void line ( int, int, int, int );
   void arc ( int, int, float );
+  void line_width ( float );
   GLuint buffer;
   Program* program;
   Transform* matrix;
   GLFWwindow* window;
   int width, height;
+  float _line_width = 2;
+  int r = 0;
+  int g = 0;
+  int b = 0;
  private:
   int major, minor;
   std::vector<Program*> shaders;

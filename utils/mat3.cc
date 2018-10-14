@@ -22,13 +22,15 @@ void copy ( float* m1, float* m2 )
   m1[ 8 ] = m2[ 8 ];
 }
 
-void translate ( float* m1, float x, float y ) {
+void translate ( float* m1, float x, float y )
+{
   m1[ 6 ] = x * m1[ 0 ] + y * m1[ 3 ] + m1[ 6 ];
   m1[ 7 ] = x * m1[ 1 ] + y * m1[ 4 ] + m1[ 7 ];
   m1[ 8 ] = x * m1[ 2 ] + y * m1[ 5 ] + m1[ 8 ];
 }
 
-void rotate ( float* m1, float angle ) {
+void rotate ( float* m1, float angle )
+{
   float m10 = m1[ 0 ],
         m11 = m1[ 1 ],
         m12 = m1[ 2 ],
@@ -47,7 +49,8 @@ void rotate ( float* m1, float angle ) {
   m1[ 5 ] = x * m15 - y * m12;
 }
 
-void scale ( float* m1, float x, float y ) {
+void scale ( float* m1, float x, float y )
+{
   m1[ 0 ] *= x;
   m1[ 1 ] *= x;
   m1[ 2 ] *= x;

@@ -1,5 +1,5 @@
-#include "Transform.h"
-#include "mat3.h"
+#include "../Transform.h"
+#include "../utils/mat3.h"
 
 Transform::Transform ()
 {

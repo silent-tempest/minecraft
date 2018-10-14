@@ -1,7 +1,7 @@
 #include <algorithm>
-#include "include/GLFW/glfw3.h"
-#include "VirtualTicker.h"
-#include "timestamp.h"
+#include "../include/GLFW/glfw3.h"
+#include "../VirtualTicker.h"
+#include "../utils/timestamp.h"
 
 void VirtualTicker::tick ()
 {
